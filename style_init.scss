@@ -1,0 +1,87 @@
+// -------------------------------------------------------
+// A simple SCSS base project with useful mixin to start
+// working in the painless way -.-
+// 
+// @author: Yari D'areglia
+// @version: 0.3  
+// -------------------------------------------------------
+
+
+//Create em value from pixel 
+@function pe($val){
+	@return($val/16);
+}
+
+//One row font definition
+@mixin font-def($family:null,$size:null,$color:null,$line-height:null,$weight:null,$spacing:null){
+	font:{
+		@if $family != null{
+		family: #{$family};
+		}
+		@if $size != null{
+		size: $size;
+		}
+		@if $weight != null{
+		weight: $weight;
+		}		
+	}	
+	@if $color != null{
+		color: $color;
+	}
+	@if $line-height != null{
+		line-height: $line-height;
+	}
+	@if $spacing != null{
+		letter-spacing: $spacing;
+	}					
+}
+
+//Set a bg image for blocks with a fixed size
+//(it use "img/" as image folder)
+@mixin bg($img,$width,$height){
+	background:url(img/#{$img}) no-repeat top left;
+	width: $width;
+	height: $height;
+}
+
+//Rounded corner
+@mixin rounded($val){
+	@each $prefix in -webkit-,'',-moz-{
+		#{$prefix}border-radius: #{$val}px;;	
+	}
+}
+
+//Shadow
+@mixin shadow ($position,$color,$inset:''){
+	@each $prefix in -webkit-,'',-moz-{
+		#{$prefix}box-shadow: #{$position} #{$color} #{$inset};		
+	}
+}
+
+//Transition
+@mixin transition($what:all, $time:0.3, $mode:ease-out){
+	@each $prefix in -webkit-,'',-moz-,-ms-,-o-{
+		#{$prefix}transition: $what #{$time}s $mode;
+	}
+}
+
+//Measure, size and % **********************************************************
+
+//Proportional P-ercentual C-alculation
+//Use it converting a layout from px to % 
+//Ie: my header is 1024px wide, logo is 200, i need mantain these proportion 
+//in Logo definition: @include pc(1024px,200px);  
+@function pc($full_size,$part){
+	@return ($part/$full_size)*100%;
+}
+
+//paw (P-adding A-nd W-idth)
+//Generate width and padding subtracting right and left padding from width
+//(You can use it in conjunction with "pc" function to convert from pixel to %)
+//I.e: @include paw(pc(1024px,200px),0,5%,0,pc(1024px,10px)); 
+
+@mixin paw($width,$top:0,$left:0,$bottom:0,$right:0){
+	width: $width - $left - $right;	
+	padding: $top $left $bottom $right;
+
+}
